@@ -18,18 +18,32 @@ class FormSearch extends Component {
             method: "GET",
             baseURL: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_City_Explorer}&q=${this.state.city}`,
         }
+        fetch(config.baseURL)
+            .then(async response => {
+                const data = await response.json();
+                // check for error response
+                if (!response.ok) {
+                    // get error message from body or default to response statusText
+                    const error = (data && data.message) || response.statusText;
+                    return Promise.reject(error);
+                }
 
-        axios(config).then(res => {
-            let cityObj = res.data[0];
-            this.setState({
-                lat: cityObj.lat,
-                lon: cityObj.lon,
-                src: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_City_Explorer}&center=${cityObj.lat},${cityObj.lon}`,
-                err: cityObj.error
+                this.setState({ totalReactPackages: data.total })
+                axios(config).then(res => {
+                    let cityObj = res.data[0];
+                    this.setState({
+                        lat: cityObj.lat,
+                        lon: cityObj.lon,
+                        src: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_City_Explorer}&center=${cityObj.lat},${cityObj.lon}`,
+                        err: cityObj.status
+                    })
+                })
+
             })
-            console.log(this.state.src)
-        })
-
+            .catch(error => {
+                this.setState({ errorMessage: error.toString() });
+                alert('There was an error!', "please enter a correct city");
+            });
     }
     cityName = (e) => {
         this.setState({
@@ -67,7 +81,7 @@ class FormSearch extends Component {
 
                         this.state.lon && <>
                             <Location city={this.state.city} lon={this.state.lon} lat={this.state.lat} />
-                            <Image src={this.state.src} fluid />
+                            <Image src={`https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_City_Explorer}&center=${this.state.lat},${this.state.lon}&zoom=1-18`} fluid />
                         </>
                     }
                 </div>
