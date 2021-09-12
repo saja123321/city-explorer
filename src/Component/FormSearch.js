@@ -31,8 +31,6 @@ class FormSearch extends Component {
         })
 
     }
-
-
     cityName = (e) => {
         this.setState({
             city: e.target.value
@@ -72,9 +70,6 @@ class FormSearch extends Component {
                             <Image src={this.state.src} fluid />
                         </>
                     }
-
-
-
                 </div>
             </center >
         )
