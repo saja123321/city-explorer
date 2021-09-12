@@ -91,7 +91,7 @@ class FormSearch extends Component {
 
                         (!this.state.show) && this.state.lon && <>
                             <Location city={this.state.city} lon={this.state.lon} lat={this.state.lat} />
-                            <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_City_Explorer}&center=35.9239625,31.9515694&zoom=5`} fluid />
+                            <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_City_Explorer}&center=${this.state.lat},${this.state.lon}`} fluid />
                         </>
                     }
                     {
