@@ -2,14 +2,18 @@ import axios from 'axios';
 import React, { Component } from 'react'
 import Location from './Location';
 import { Image } from 'react-bootstrap';
-
+import ErrorMsg from './ErrorMsg';
 class FormSearch extends Component {
     state = {
         city: "",
         lat: "",
         lon: '',
         src: '',
-        err: ""
+        err: "",
+        show: false
+    }
+    showError = () => {
+        console.log('hi from show error');
     }
     exploreCity = (e) => {
 
@@ -41,9 +45,15 @@ class FormSearch extends Component {
 
             })
             .catch(error => {
-                this.setState({ errorMessage: error.toString() });
-                alert('There was an error!', "please enter a correct city");
+                this.setState({
+                    errorMessage: error.toString(),
+                    show: true
+                });
+                alert('invaled city name ')
             });
+        if (this.state.show) {
+
+        }
     }
     cityName = (e) => {
         this.setState({
@@ -79,11 +89,15 @@ class FormSearch extends Component {
                     </form>
                     {
 
-                        this.state.lon && <>
+                        (!this.state.show) && this.state.lon && <>
                             <Location city={this.state.city} lon={this.state.lon} lat={this.state.lat} />
-                            <Image src={`https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_City_Explorer}&center=${this.state.lat},${this.state.lon}&zoom=1-18`} fluid />
+                            <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_City_Explorer}&center=35.9239625,31.9515694&zoom=5`} fluid />
                         </>
                     }
+                    {
+                        (this.state.show) && <ErrorMsg />
+                    }
+
                 </div>
             </center >
         )
