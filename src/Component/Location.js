@@ -10,10 +10,6 @@ export class Location extends Component {
                 </h6>
                 <h6>
                     <Badge bg="secondary"> {this.props.lon} </Badge> / <Badge bg="secondary"> {this.props.lat} </Badge>
-                    <h1 > {this.props.lon}  </h1>
-                    {
-                        console.log("Lon >" + this.props.lon)
-                    }
                 </h6>
             </div>
         )
