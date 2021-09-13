@@ -49,7 +49,6 @@ class FormSearch extends Component {
                     errorMessage: error.toString(),
                     show: true
                 });
-                alert('invaled city name ')
             });
         if (this.state.show) {
 
@@ -66,7 +65,7 @@ class FormSearch extends Component {
                 <div>
                     <form onSubmit={this.exploreCity}>
                         <input type="text" id="cityName" name="search" placeholder="Search........." onChange={this.cityName} style={{
-                            width: '130px',
+                            width: '300px',
                             boxSizing: "border-box",
                             border: "2px solid #ccc",
                             borderRadius: "4px",
@@ -77,7 +76,7 @@ class FormSearch extends Component {
                         }} />
                         <input type="submit" name="search" value="Explore!" style=
                             {{
-                                width: '130px',
+                                width: '200px',
                                 boxSizing: "border-box",
                                 border: "2px solid #ccc",
                                 borderRadius: "4px",
