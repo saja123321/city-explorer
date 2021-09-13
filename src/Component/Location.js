@@ -1,17 +1,24 @@
 import React, { Component } from 'react'
-import { Badge, Image } from 'react-bootstrap'
+import { Card, Badge } from 'react-bootstrap'
 export class Location extends Component {
     render() {
         return (
-            <div>
-                <h1>Location Recuested</h1>
-                <h6>
-                    City Name <Badge bg="secondary"> {this.props.city} </Badge>
-                </h6>
-                <h6>
-                    <Badge bg="secondary"> {this.props.lon} </Badge> / <Badge bg="secondary"> {this.props.lat} </Badge>
-                </h6>
-            </div>
+            <div className='col-3' style={{ margin: "30px 20px" }}>
+                <Card style={{ width: '18rem' }}>
+                    <Card.Title>
+                        <Badge bg="secondary"> {this.props.city} </Badge>
+                    </Card.Title>
+                    <Card.Body>
+
+                        <Card.Text>
+                            <Badge bg="secondary" className='m-2'> {this.props.lat} </Badge>
+                            <Badge bg="secondary" className='m-2'> / </Badge>
+                            <Badge bg="secondary" className='m-2'> {this.props.lon} </Badge>
+
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+            </div >
         )
     }
 }

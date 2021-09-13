@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import Location from './Location';
 import { Image } from 'react-bootstrap';
 import ErrorMsg from './ErrorMsg';
+import Weather from './Weather';
 class FormSearch extends Component {
     state = {
         city: "",
@@ -10,18 +11,52 @@ class FormSearch extends Component {
         lon: '',
         src: '',
         err: "",
-        show: false
+        show: false,
+        dataFromBack: ''
     }
+    getDataFromBack() {
+        axios.get(`http://${process.env.REACT_APP_BACKEND_PORT}/weather?lat=${this.state.lat}&lon=${this.state.lon}&searchQuery=${this.state.city}`)
+            .then(res => {
+                this.setState
+                    ({
+                        show: false,
+
+                        dataFromBack: res.data
+                    })
+            }).catch(error =>
+                this.setState({
+                    show: true,
+
+                })
+
+            )
+
+    }
+
+
+    ///////////////////////
+
+    longTask = (status) => new Promise((resolve, reject) => {
+        let timer = Math.floor(2 * 1000);
+        setTimeout(() => {
+            this.getDataFromBack()
+        }, timer);
+
+    });
+
+    //////////////////////////
+
+
     showError = () => {
         console.log('hi from show error');
     }
     exploreCity = (e) => {
-
         e.preventDefault();
         let config = {
             method: "GET",
             baseURL: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_City_Explorer}&q=${this.state.city}`,
         }
+
         fetch(config.baseURL)
             .then(async response => {
                 const data = await response.json();
@@ -31,28 +66,28 @@ class FormSearch extends Component {
                     const error = (data && data.message) || response.statusText;
                     return Promise.reject(error);
                 }
-
                 this.setState({ totalReactPackages: data.total })
                 axios(config).then(res => {
                     let cityObj = res.data[0];
                     this.setState({
+                        show: false,
                         lat: cityObj.lat,
                         lon: cityObj.lon,
                         src: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_City_Explorer}&center=${cityObj.lat},${cityObj.lon}`,
-                        err: cityObj.status
                     })
                 })
 
-            })
-            .catch(error => {
+
+            }
+
+            ).then(res =>
+                (this.longTask())
+            ).catch(error =>
                 this.setState({
                     errorMessage: error.toString(),
                     show: true
-                });
-            });
-        if (this.state.show) {
-
-        }
+                })
+            );
     }
     cityName = (e) => {
         this.setState({
@@ -88,9 +123,17 @@ class FormSearch extends Component {
                     </form>
                     {
 
-                        (!this.state.show) && this.state.lon && <>
-                            <Location city={this.state.city} lon={this.state.lon} lat={this.state.lat} />
-                            <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_City_Explorer}&center=${this.state.lat},${this.state.lon}`} fluid />
+                        (!this.state.show) && this.state.lon && this.state.dataFromBack && <>
+                            <div className='row' style={{ justifyContent: 'center' }}>
+                                <Location city={this.state.city} lon={this.state.lon} lat={this.state.lat} />
+                                <Image style={{ width: '300px' }} className='col-3' src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_City_Explorer}&center=${this.state.lat},${this.state.lon}`} fluid />
+                            </div>
+                            <div className='row'>  {this.state.dataFromBack.map(d => {
+                                return <Weather cityName={this.state.city} valid_date={d.valid_date} description={d.description} />
+                            }
+                            )
+                            }
+                            </div>
                         </>
                     }
                     {
