@@ -56,3 +56,16 @@ Finish time: 1 am
 
 Actual time needed to complete:4
 ```
+
+# day 1 Time Estamation
+
+```
+Name of feature: weather 
+
+Estimate of time needed to complete: 1houre hours
+Start time: 10:00pm
+
+Finish time: 11:00 pm
+
+Actual time needed to complete:1 hour
+```
