@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { Component } from 'react'
 import Location from './Location';
-import { Image } from 'react-bootstrap';
+import MovieData from './MovieData';
+import { Badge } from 'react-bootstrap';
 import ErrorMsg from './ErrorMsg';
 import Weather from './Weather';
 class FormSearch extends Component {
@@ -14,7 +15,8 @@ class FormSearch extends Component {
         city_name: '',
         show: false,
         dataFromBack: '',
-        movieFromBack: ''
+        movieFromBack: '',
+        show2: true
     }
 
     getDataFromBack() {
@@ -35,17 +37,24 @@ class FormSearch extends Component {
 
     }
     getDataMovie() {
-        axios.get(`http://${process.env.REACT_APP_BACKEND_PORT}/movies?api_key=74b29308bb70138feec3e94fe656d2a2&query=Seattle`)
+        axios.get(`http://${process.env.REACT_APP_BACKEND_PORT}/movies?api_key=74b29308bb70138feec3e94fe656d2a2&query=${this.state.city}`)
             .then(res => {
-
+                let show2;
                 this.setState
                     ({
-                        show: false,
-                        movieFromBack: res.data.data
+
+                        movieFromBack: res.data
                     })
+                if (this.state.movieFromBack.length > 0) {
+                    this.setState
+                        ({ show2: true })
+                } else {
+                    this.setState
+                        ({ show2: false })
+                }
             }).catch(error =>
                 this.setState({
-                    show: true,
+                    show2: false,
                 })
 
             )
@@ -71,7 +80,7 @@ class FormSearch extends Component {
                 lat: cityObj.lat,
                 lon: cityObj.lon,
                 city_name: cityObj.address.name,
-                src: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_City_Explorer}&center=${cityObj.lat},${cityObj.lon}`,
+                src: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_City_Explorer}&center=${cityObj.lat},${cityObj.lon}`
             })
         }).then(res =>
             (this.getDataFromBack())
@@ -117,14 +126,30 @@ class FormSearch extends Component {
                                 margin: "12px 50px 42px 40px"
                             }} />
                     </form>
+
                     {
 
                         (!this.state.show) && this.state.lon && this.state.dataFromBack && <>
                             <div className='row' style={{ justifyContent: 'center' }}>
-                                <Location city={this.state.city_name} lon={this.state.lon} lat={this.state.lat} />
-                                <Image style={{ width: '300px' }} className='col-3' src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_City_Explorer}&center=${this.state.lat},${this.state.lon}`} fluid />
+                                <Location src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_City_Explorer}&center=${this.state.lat},${this.state.lon}`} city={this.state.city_name} lon={this.state.lon} lat={this.state.lat} />
                             </div>
-                            <div className='row'>
+                            <div className='row' style={{ margin: '20px' }}>
+
+                                {this.state.show2 ?
+                                    this.state.movieFromBack.map
+                                        (
+
+                                            d => {
+                                                return <MovieData title={d.title} overview={d.overview} average_votes={d.average_votes} total_votes={d.total_votes} released_on={d.released_on} image_url={d.image_url} />
+                                            }
+
+
+                                        ) :
+                                    <h4>  <Badge bg="warning">'no data for movies</Badge></h4>
+
+                                }
+                            </div>
+                            <div className='row' style={{ margin: '20px' }}>
 
                                 {this.state.dataFromBack.map
                                     (

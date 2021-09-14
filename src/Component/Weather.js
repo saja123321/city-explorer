@@ -4,7 +4,7 @@ class Weather extends Component {
     render() {
         return (
             <div className='col' style={{ margin: "30px 20px" }}>
-                <Card style={{ width: '18rem' }}>
+                <Card >
                     <Card.Title>{this.props.cityName}</Card.Title>
                     <center> <Card.Img style={{ width: '150px', height: '150px' }} src="https://www.upc.edu/prevencio/ca/shared/imatges/icones/exteriors.png" />
                     </center>
