@@ -11,5 +11,4 @@ class ErrorMsg extends Component {
         )
     }
 }
-
 export default ErrorMsg
