@@ -4,13 +4,11 @@ export class Location extends Component {
     render() {
         return (
             <div className='col-6' style={{ margin: "30px auto" }}>
-
                 <div >
                     <Accordion>
                         <Accordion.Item eventKey="0" >
                             <Accordion.Header>  {this.props.city} </Accordion.Header>
                             <Accordion.Body>
-
                                 <div className="row">
                                     <h4 className="col-5"> <Badge bg="secondary" className='m-2'> Lat </Badge> </h4>
                                     <Badge bg="secondary" className='m-3 col' > / </Badge>
@@ -30,5 +28,4 @@ export class Location extends Component {
         )
     }
 }
-
 export default Location
