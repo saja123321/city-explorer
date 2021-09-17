@@ -7,7 +7,7 @@ class Weather extends Component {
             <div className='row' style={{ margin: '20px' }}>
                 {this.props.dataFromBack.map
                     (d => {
-                        return <OneWeather cityName={this.props.cityName} valid_date={d.valid_date} description={d.description} />
+                        return <OneWeather cityName={this.props.cityName} valid_date={d.time} description={d.forecast} />
                     })
                 }
             </div>

@@ -21,7 +21,7 @@ class FormSearch extends Component {
         show2: true
     }
     getDataFromBack() {
-        axios.get(`http://${process.env.REACT_APP_BACKEND_PORT}/weather?lat=${this.state.lat}&lon=${this.state.lon}&key=09b034f885484632854c033f1e72519d`)
+        axios.get(`${process.env.REACT_APP_BACKEND_PORT}/weather?lat=${this.state.lat}&lon=${this.state.lon}&key=09b034f885484632854c033f1e72519d`)
             .then(res => {
                 this.setState
                     ({
@@ -35,7 +35,7 @@ class FormSearch extends Component {
             )
     }
     getDataMovie() {
-        axios.get(`http://${process.env.REACT_APP_BACKEND_PORT}/movies?api_key=74b29308bb70138feec3e94fe656d2a2&query=${this.state.city}`)
+        axios.get(`${process.env.REACT_APP_BACKEND_PORT}/movies?api_key=74b29308bb70138feec3e94fe656d2a2&query=${this.state.city}`)
             .then(res => {
                 this.setState
                     ({
@@ -73,6 +73,7 @@ class FormSearch extends Component {
                 city_name: cityObj.address.name,
                 src: `https://api.locationiq.com/v1/autocomplete.php?key=${process.env.REACT_APP_City_Explorer}&center=${cityObj.lat},${cityObj.lon}`
             })
+            console.log(this.state.city_name)
         }).then(res =>
             /// weather
             (this.getDataFromBack())
